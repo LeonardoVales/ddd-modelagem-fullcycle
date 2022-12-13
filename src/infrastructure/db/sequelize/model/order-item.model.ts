@@ -10,7 +10,7 @@ export default class OrderItemModel extends Model {
 
   @PrimaryKey
   @Column
-  declare id: number;
+  declare id: string;
 
   @ForeignKey(() => ProductModel)
   @Column({ allowNull: false })
