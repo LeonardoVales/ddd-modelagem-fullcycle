@@ -8,16 +8,24 @@ import OrderModel from "../db/sequelize/model/order.model";
 export default class OrderRepository implements OrderRepositoryInterface {
   async update(entity: Order): Promise<void> {
 
+    const orderItems = await OrderItemModel.findAll({ where: { order_id: entity.id }})
+
     entity.items.map(async (item) => {
-      await OrderItemModel.update({
-        id: item.id,
-        name: item.name,
-        price: item.price,
-        product_id: item.productId,
-        quantity: item.quantity
-      }, {
-        where: { id: item.id}
+      const orderItemExists = orderItems.find((orderItem) => {
+        return orderItem.id == item.id
       })
+
+      if (!orderItemExists) {
+        await OrderItemModel.create({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          product_id: item.productId,
+          order_id: entity.id,
+          quantity: item.quantity
+        })
+      }
+
     })
 
     await OrderModel.update({
@@ -28,27 +36,6 @@ export default class OrderRepository implements OrderRepositoryInterface {
     }, {
       where: { id: entity.id}
     })
-     
-    // const sequelize = OrderModel.sequelize
-    // await sequelize.transaction(async (t) => {
-    //   await OrderItemModel.destroy({
-    //     where: { order_id: entity.id },
-    //     transaction: t,
-    //   })
-    //   const items = entity.items.map((item) => ({
-    //     id: item.id,
-    //     name: item.name,
-    //     price: item.price,
-    //     product_id: item.productId,
-    //     quantity: item.quantity,
-    //     order_id: entity.id,
-    //   }))
-    //   await OrderItemModel.bulkCreate(items, { transaction: t })
-    //   await OrderModel.update(
-    //     { customer_id: entity.customerId, total: entity.total() },
-    //     { where: { id: entity.id }, transaction: t }
-    //   )
-    // })
   }
 
   async find(id: string): Promise<Order> {

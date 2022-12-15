@@ -143,6 +143,53 @@ describe("Order repository test", () => {
     });
   })
 
+  it('Should add new orderItem', async () => {
+    const customerRepository = new CustomerRepository();
+
+    const customer = new Customer("123", "Customer 1");
+    const address = new Address("Street 1", 1, "ZipCode 1", "City 1");
+    customer.Address = address;
+    await customerRepository.create(customer);
+
+    const productRepository = new ProductRepository();
+    const product = new Product("123", "Product 1", 10);
+    await productRepository.create(product);
+
+    const orderItem = new OrderItem(
+        "1",
+        product.name,
+        product.price,
+        1,
+        product.id,
+    );
+
+    const order = new Order("123", "123", [orderItem]);
+    const orderRepository = new OrderRepository();
+    await orderRepository.create(order);
+
+    const orderItem2 = new OrderItem(
+      "2",
+      product.name,
+      product.price,
+      1,
+      product.id,
+    );
+
+    const newOrder = new Order("123", "123", [orderItem2]);
+
+    await orderRepository.update(newOrder)
+
+    const orderModel = await OrderModel.findOne({
+      where: { id: order.id },
+      include: ["items"]
+    })
+
+    // console.log(orderModel.toJSON())
+
+    expect(orderModel.toJSON().items.length).toBe(2)
+    expect(true).toBeTruthy()
+  })
+
   it('should find a order', async () => {
     const customerRepository = new CustomerRepository()
     const customer = new Customer('456', 'Customer 1')
