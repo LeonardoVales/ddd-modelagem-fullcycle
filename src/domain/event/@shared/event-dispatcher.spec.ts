@@ -4,6 +4,8 @@ import ProductCreatedEvent from '../product/product-created.event'
 import EnviaConsoleLog1WhenCustomerIsCreatedHandler from "../customer/handler/envia-console-log-1-when-customer-is-created.handler"
 import EnviaConsoleLog2WhenCustomerIsCreatedHandler from "../customer/handler/envia-console-log-2-when-customer-is-created.handler"
 import CustomerCreatedEvent from "../customer/customer-created.event"
+import EnviaConsoleLogWhenCustomerChangedAddressHandler from "../customer/handler/envia-console-log-1-when-customer-changed-address.handler"
+import AddressChangedEvent from "../customer/address-changed.event"
 
 describe('Domain events tests', () => {
   it('Should register an event handler', () => {
@@ -116,5 +118,22 @@ describe('Domain events tests', () => {
 
     expect(spyEventHandler1).toHaveBeenCalled()
     expect(spyEventHandler2).toHaveBeenCalled()
+  })
+
+  it('Should notify customer when changedAddress', () => {
+    const eventDispatcher = new EventDispatcher()
+    const eventHandler = new EnviaConsoleLogWhenCustomerChangedAddressHandler()
+    const spyEventHandler = jest.spyOn(eventHandler, 'handle')
+    eventDispatcher.register('AddressChangedEvent', eventHandler)
+
+    const addressChanged = new AddressChangedEvent({
+      id: '1',
+      name: 'Costomer 1',
+      address: 'Any street, 3, 345643, any city'
+    })
+
+    eventDispatcher.notify(addressChanged)
+
+    expect(spyEventHandler).toHaveBeenCalled()
   })
 })
