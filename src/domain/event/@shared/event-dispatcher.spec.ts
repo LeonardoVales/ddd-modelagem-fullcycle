@@ -1,6 +1,8 @@
 import SendEmailWhenProductIsCreatedHandler from "../product/handler/send-email-when-product-is-created.handler"
 import EventDispatcher from "./event-dispatcher"
 import ProductCreatedEvent from '../product/product-created.event'
+import EnviaConsoleLog1WhenCustomerIsCreatedHandler from "../customer/handler/envia-console-log-1-when-customer-is-created.handler"
+import EnviaConsoleLog2WhenCustomerIsCreatedHandler from "../customer/handler/envia-console-log-2-when-customer-is-created.handler"
 
 describe('Domain events tests', () => {
   it('Should register an event handler', () => {
@@ -11,6 +13,19 @@ describe('Domain events tests', () => {
     expect(eventDispatcher.getEventHandlers['ProductCreatedEvent']).toBeDefined()
     expect(eventDispatcher.getEventHandlers['ProductCreatedEvent'].length).toBe(1)
     expect(eventDispatcher.getEventHandlers['ProductCreatedEvent'][0]).toMatchObject(eventHandler)
+  })
+
+  it('Should register events handler CustomerCreated', () => {
+    const eventDispatcher = new EventDispatcher()
+    const eventHandler1 = new EnviaConsoleLog1WhenCustomerIsCreatedHandler()
+    const eventHandler2 = new EnviaConsoleLog2WhenCustomerIsCreatedHandler()
+    eventDispatcher.register('CustomerCreatedEvent', eventHandler1)
+    eventDispatcher.register('CustomerCreatedEvent', eventHandler2)
+
+    expect(eventDispatcher.getEventHandlers['CustomerCreatedEvent']).toBeDefined()
+    expect(eventDispatcher.getEventHandlers['CustomerCreatedEvent'].length).toBe(2)
+    expect(eventDispatcher.getEventHandlers['CustomerCreatedEvent'][0]).toMatchObject(eventHandler1)
+    expect(eventDispatcher.getEventHandlers['CustomerCreatedEvent'][1]).toMatchObject(eventHandler2)
   })
 
   it('Should unregister an event handler', () => {
