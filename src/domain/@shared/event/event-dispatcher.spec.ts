@@ -1,11 +1,11 @@
-import SendEmailWhenProductIsCreatedHandler from "../product/handler/send-email-when-product-is-created.handler"
+import SendEmailWhenProductIsCreatedHandler from "../../product/event/handler/send-email-when-product-is-created.handler"
 import EventDispatcher from "./event-dispatcher"
-import ProductCreatedEvent from '../product/product-created.event'
-import EnviaConsoleLog1WhenCustomerIsCreatedHandler from "../customer/handler/envia-console-log-1-when-customer-is-created.handler"
-import EnviaConsoleLog2WhenCustomerIsCreatedHandler from "../customer/handler/envia-console-log-2-when-customer-is-created.handler"
-import CustomerCreatedEvent from "../customer/customer-created.event"
-import EnviaConsoleLogWhenCustomerChangedAddressHandler from "../customer/handler/envia-console-log-1-when-customer-changed-address.handler"
-import AddressChangedEvent from "../customer/address-changed.event"
+import ProductCreatedEvent from '../../product/event/product-created.event'
+import EnviaConsoleLog1WhenCustomerIsCreatedHandler from "../../customer/event/handler/envia-console-log-1-when-customer-is-created.handler"
+import EnviaConsoleLog2WhenCustomerIsCreatedHandler from "../../customer/event//handler/envia-console-log-2-when-customer-is-created.handler"
+import CustomerCreatedEvent from "../../customer/event/customer-created.event"
+import EnviaConsoleLogWhenCustomerChangedAddressHandler from "../../customer/event/handler/envia-console-log-1-when-customer-changed-address.handler"
+import AddressChangedEvent from "../../customer/event/address-changed.event"
 
 describe('Domain events tests', () => {
   it('Should register an event handler', () => {
