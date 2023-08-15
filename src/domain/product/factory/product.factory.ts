@@ -7,7 +7,7 @@ export default class ProductFactory {
   public static create(type: string, name: string, price: number): ProductInterface {
     switch (type) {
       case "a":
-        return new Product(uuid().toString(), name, price)
+        return new Product(uuid(), name, price)
       case "b":
         return new ProductB(uuid().toString(), name, price)
       default:

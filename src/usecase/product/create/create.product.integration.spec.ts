@@ -13,11 +13,11 @@ describe('Test create product use case', () => {
         logging: false,
         sync: { force: true },
       })
-  
+
     await sequelize.addModels([ProductModel]);
     await sequelize.sync()
     })
-  
+
     afterEach( async () => {
       await sequelize.close()
     })
